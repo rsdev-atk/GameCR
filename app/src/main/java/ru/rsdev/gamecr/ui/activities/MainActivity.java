@@ -48,7 +48,6 @@ public class MainActivity extends SingleFragmentActivity {
         //frag
         previuFragment = new PreviewFragment();
         fTrans = getSupportFragmentManager().beginTransaction();
-        //fTrans.add(R.id.fragment_container, previuFragment);
         fTrans.replace(R.id.fragment_container, previuFragment);
         fTrans.commit();
 

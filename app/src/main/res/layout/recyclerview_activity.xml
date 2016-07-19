@@ -1,17 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:paddingTop="60dp">
-    <Button
-        android:id="@+id/button_test"
-        android:text="test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+<RelativeLayout
+    android:id="@+id/container_fragmetn"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+
+    >
+    <include
+        android:id="@+id/top_panel_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/top_panel"
+        />
+
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/menu_down"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="100dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:elevation="6dp"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="true"
+        fab:menu_fab_size="mini"
+        fab:menu_openDirection="down">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_surrender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fab_add"
+            fab:fab_size="mini"
+            fab:fab_label="Сдаться" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_list_black_24dp"
+            fab:fab_size="mini"
+            fab:fab_label="Подсказка" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fab_add"
+            fab:fab_size="normal"
+            fab:fab_label="Ответ" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
+        android:layout_below="@+id/top_panel_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
     </android.support.v7.widget.RecyclerView>
-</android.support.design.widget.CoordinatorLayout>
+
+
+
+
+</RelativeLayout>

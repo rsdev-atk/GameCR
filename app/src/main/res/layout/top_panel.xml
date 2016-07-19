@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ppv="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/top_panel_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/green"
+    >
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+
+        <ImageView
+            android:id="@+id/image_view_avatar_player1"
+            android:src="@drawable/img_0"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"/>
+
+        <com.filippudak.ProgressPieView.ProgressPieView
+            android:id="@+id/progressPieView"
+            android:layout_centerHorizontal="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:textColor="@color/holo_orange_dark"
+            android:textSize="38sp"
+            android:text="65"
+
+            app:ppvProgress="33"
+            ppv:ppvTypeface="fonts/Roboto/RobotoCondensed-Bold.ttf"
+            ppv:ppvProgressFillType="center"
+            ppv:ppvStrokeWidth="6dp"
+            ppv:ppvStrokeColor="@color/holo_green_light"
+            ppv:ppvBackgroundColor="@color/holo_purple"
+            ppv:ppvProgressColor="@color/holo_red_light"/>
+
+
+        <ImageView
+            android:id="@+id/image_view_avatar_player2"
+            android:src="@drawable/android_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+
+            />
+
+
+        <TextView
+            android:id="@+id/text_view_name_player1"
+            android:text="Name1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:paddingTop="60dp"
+            />
+
+        <TextView
+            android:id="@+id/text_view_name_player2"
+            android:text="Name2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingTop="60dp"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_small_8"
+        android:paddingLeft="50dp">
+
+        <EditText
+            android:id="@+id/answer_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text=""
+            android:hint="Ответ"
+            android:inputType="textPersonName"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
+

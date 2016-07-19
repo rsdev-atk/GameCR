@@ -17,7 +17,7 @@ public class DBHelper {
     private static final String ID = "_id";
     private static final String CITY = "CityName";
 
-    GameAlgorithm gameAlgorithm = new GameAlgorithm();
+    public GameAlgorithm gameAlgorithm = new GameAlgorithm();
 
 
     public DBHelper(Context context){
@@ -44,7 +44,7 @@ public class DBHelper {
     }
 
     //Получение нового города (ответа ПК) по ответу пользователя
-    public ArrayList getAnswerPC(String userCity)
+    public String getAnswerPC(String userCity)
     {
         ArrayList<String> answersVariant = new ArrayList<String>();
         char firstLatter = gameAlgorithm.getLastLetter(userCity);
@@ -63,7 +63,11 @@ public class DBHelper {
             //result = "No";
         }
         cursor.close();
-        return answersVariant;
+
+        //Выбор случайного города из всех вариантов
+        final Random random = new Random();
+        int numberOfAnswer = random.nextInt(answersVariant.size());
+        return answersVariant.get(numberOfAnswer);
     }
 
     //Поиск города в БД

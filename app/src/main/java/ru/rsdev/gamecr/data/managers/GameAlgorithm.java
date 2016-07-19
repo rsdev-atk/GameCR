@@ -1,5 +1,9 @@
 package ru.rsdev.gamecr.data.managers;
 
+import java.util.List;
+
+import ru.rsdev.gamecr.data.model.Person;
+
 public class GameAlgorithm {
     //Список мусорных букв, на которые не нечинаются города (ё и й заменяются на соответствующие е и и)
     private char badLetters[] = {'ъ','ь','ы','ц'};
@@ -30,12 +34,6 @@ public class GameAlgorithm {
         return newLetter;
     }
 
-
-
-
-
-
-
     //Получение валидного названия города
     public String getCorrectCityName(String userAnswer)
     {
@@ -56,6 +54,17 @@ public class GameAlgorithm {
         lastCharOldAnswer = Character.toLowerCase(lastCharOldAnswer);
         firstCharUserAnswer = Character.toLowerCase(firstCharUserAnswer);
         return lastCharOldAnswer==firstCharUserAnswer;
+    }
+
+    public boolean getDoublingAnswer(List<Person> list, String answer){
+
+        boolean result = true;
+        for(int i=0;i<list.size();i++){
+            if(list.get(i).name.equals(answer)){
+                return false;
+            }
+        }
+        return result;
     }
 
 
