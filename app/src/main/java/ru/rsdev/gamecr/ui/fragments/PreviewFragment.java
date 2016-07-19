@@ -121,18 +121,25 @@ public class PreviewFragment extends Fragment {
             public void onClick(View view) {
                 showSnackbar("Подсказка");
 
-                new CountDownTimer(10000, 1000) {
+
+                //final int timeTimerMax = ConstantManager.TIMER_SIMGLE_GAME_LOW;
+                final int timeTimerMax = 40000;
+
+                new CountDownTimer(timeTimerMax, 1000) {
+
+                    float timeKoef = (float)timeTimerMax/(100*1000);
 
                     public void onTick(long millisUntilFinished) {
-                        mProgressPieView.setText(String.valueOf(millisUntilFinished / 1000));
-                        mProgressPieView.setProgress((int) (millisUntilFinished / 1000));
+                        mProgressPieView.setText(String.valueOf((millisUntilFinished-1) / 1000));
+
+                        mProgressPieView.setProgress((int) (millisUntilFinished / (1000*timeKoef)));
                     }
 
                     public void onFinish() {
                         mProgressPieView.setText("done!");
                         mProgressPieView.setProgress(0);
 
-                        showSnackbar("GameOver");
+                        //showSnackbar("GameOver");
                     }
                 }.start();
 
