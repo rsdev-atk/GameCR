@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -24,6 +25,7 @@ import ru.rsdev.gamecr.R;
 import ru.rsdev.gamecr.data.model.Person;
 import ru.rsdev.gamecr.data.storage.DBHelper;
 import ru.rsdev.gamecr.ui.adapters.RVAdapter;
+import ru.rsdev.gamecr.utils.ConstantManager;
 
 public class PreviewFragment extends Fragment {
     private List<Person> persons;
@@ -46,17 +48,13 @@ public class PreviewFragment extends Fragment {
         initializeData();
         initializeAdapter();
 
-
-
-
-
         return v;
     }
 
     private void initializeData(){
         persons = new ArrayList<>();
         String answer = mDBHelper.getRandomCity();
-        persons.add(0, new Person(answer, "years old ", android.R.drawable.arrow_up_float));
+        addAnswer(answer);
         }
 
     private void initializeAdapter(){
@@ -109,7 +107,7 @@ public class PreviewFragment extends Fragment {
 
                     //Оnвет ПК
                     String pcAnswer = getPCAnswer();
-                    persons.add(0, new Person(pcAnswer, "years old ", android.R.drawable.arrow_up_float));
+                    addAnswer(pcAnswer);
                     initializeAdapter();
                     //setEditText(true);
                 }
@@ -121,22 +119,18 @@ public class PreviewFragment extends Fragment {
             public void onClick(View view) {
                 showSnackbar("Подсказка");
 
-
-                //final int timeTimerMax = ConstantManager.TIMER_SIMGLE_GAME_LOW;
-                final int timeTimerMax = 40000;
-
+                final int timeTimerMax = ConstantManager.TIMER_SIMGLE_GAME_LOW;
                 new CountDownTimer(timeTimerMax, 1000) {
 
                     float timeKoef = (float)timeTimerMax/(100*1000);
 
                     public void onTick(long millisUntilFinished) {
                         mProgressPieView.setText(String.valueOf((millisUntilFinished-1) / 1000));
-
                         mProgressPieView.setProgress((int) (millisUntilFinished / (1000*timeKoef)));
                     }
 
                     public void onFinish() {
-                        mProgressPieView.setText("done!");
+                        mProgressPieView.setText("0");
                         mProgressPieView.setProgress(0);
 
                         //showSnackbar("GameOver");
@@ -151,6 +145,8 @@ public class PreviewFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 showSnackbar("Сдаться");
+                int pointGame = persons.size();
+                gameOver("Победил соперник", pointGame);
             }
         });
 
@@ -185,7 +181,7 @@ public class PreviewFragment extends Fragment {
             return false;
         }
         else {
-            persons.add(0, new Person(answer, "years old ", android.R.drawable.arrow_up_float));
+            addAnswer(answer);
             answerEditText.setText("");
             return true;
         }
@@ -193,15 +189,62 @@ public class PreviewFragment extends Fragment {
 
     private String getPCAnswer(){
         String oldAnswer = persons.get(0).name;
-        return mDBHelper.getAnswerPC(oldAnswer);
+        ArrayList<String> answersVariant = mDBHelper.getAnswerPC(oldAnswer);
+
+        //Проверка на повторы
+        for (int i=0;i<answersVariant.size();i++) {
+
+            for (int j = 0; j < persons.size(); j++) {
+                String str1 = answersVariant.get(i);
+                String str2 = persons.get(j).name;
+
+                if (str1.equals(str2)) {
+                    answersVariant.remove(i);
+                }
+            }
+        }
+
+
+
+/*
+        //Выбор случайного города из всех вариантов
+        final Random random = new Random();
+        int numberOfAnswer = random.nextInt(answersVariant.size());
+        return answersVariant.get(numberOfAnswer);
+*/
+        return answersVariant.get(0);
+        //return mDBHelper.getAnswerPC(oldAnswer);
+    }
+
+    private void addAnswer(String answer){
+        List<String> list = mDBHelper.getAllDataAboutCity(answer);
+        String stateName = list.get(0);
+        String population = list.get(2);
+        String dateStart = list.get(3);
+
+        persons.add(0, new Person(answer, stateName, population, dateStart, String.valueOf(persons.size() + 1) ));
     }
 
 
+    private void gameOver(String winnerName, int pointsCount){
+
+        ResultFragment resultFragment = new ResultFragment();
+        Bundle arguments = new Bundle();
+
+        arguments.putString(ConstantManager.NAME_WINNER_RESULT, winnerName);
+        arguments.putInt(ConstantManager.POINT_COUNT_RESULT, pointsCount);
+
+        resultFragment.setArguments(arguments);
+
+        FragmentTransaction fTrans;
+        fTrans = getActivity().getSupportFragmentManager().beginTransaction();
+        fTrans.replace(R.id.fragment_container, resultFragment);
+        fTrans.commit();
+    }
 
     private void showSnackbar(String message){
         Snackbar.make(containerFragmetn, message, Snackbar.LENGTH_SHORT).show();
     }
-
 
 
 

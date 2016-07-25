@@ -44,7 +44,7 @@ public class DBHelper {
     }
 
     //Получение нового города (ответа ПК) по ответу пользователя
-    public String getAnswerPC(String userCity)
+    public ArrayList getAnswerPC(String userCity)
     {
         ArrayList<String> answersVariant = new ArrayList<String>();
         char firstLatter = gameAlgorithm.getLastLetter(userCity);
@@ -56,7 +56,6 @@ public class DBHelper {
             do {
                 String cursorData = cursor.getString(nameColIndex);
                 answersVariant.add(cursorData);
-
             } while (cursor.moveToNext());
         } else
         {
@@ -64,10 +63,12 @@ public class DBHelper {
         }
         cursor.close();
 
-        //Выбор случайного города из всех вариантов
-        final Random random = new Random();
-        int numberOfAnswer = random.nextInt(answersVariant.size());
-        return answersVariant.get(numberOfAnswer);
+        return answersVariant;
+
+
+
+
+
     }
 
     //Поиск города в БД

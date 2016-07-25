@@ -22,23 +22,23 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         CardView cv;
         TextView personName;
         TextView personAge;
-        ImageView personPhoto;
+        TextView population;
+        TextView dateStart;
+        TextView numberAnswer;
 
 
         RelativeLayout relativeLayout;
 
 
                 PersonViewHolder(View itemView) {
-            super(itemView);
-            cv = (CardView)itemView.findViewById(R.id.cv);
-            personName = (TextView)itemView.findViewById(R.id.person_name);
-            personAge = (TextView)itemView.findViewById(R.id.person_age);
-            personPhoto = (ImageView)itemView.findViewById(R.id.person_photo);
-
-
+                    super(itemView);
+                    cv = (CardView)itemView.findViewById(R.id.cv);
                     relativeLayout = (RelativeLayout)itemView.findViewById(R.id.card_cont);
-
-
+                    personName = (TextView)itemView.findViewById(R.id.person_name);
+                    personAge = (TextView)itemView.findViewById(R.id.person_age);
+                    population = (TextView)itemView.findViewById(R.id.txt_population);
+                    dateStart = (TextView)itemView.findViewById(R.id.txt_date_start);
+                    numberAnswer = (TextView)itemView.findViewById(R.id.txt_number);
         }
     }
 
@@ -65,7 +65,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
         personViewHolder.personName.setText(persons.get(position).name);
         personViewHolder.personAge.setText(persons.get(position).age);
-        personViewHolder.personPhoto.setImageResource(persons.get(position).photoId);
+        personViewHolder.population.setText(persons.get(position).population);
+        personViewHolder.dateStart.setText(persons.get(position).dateStart);
+        personViewHolder.numberAnswer.setText(persons.get(position).numberAnswer);
 
         //personViewHolder.cv.setCardBackgroundColor(Color.RED);
 
