@@ -20,6 +20,7 @@ import com.filippudak.ProgressPieView.ProgressPieView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import ru.rsdev.gamecr.R;
 import ru.rsdev.gamecr.data.model.Person;
@@ -27,7 +28,7 @@ import ru.rsdev.gamecr.data.storage.DBHelper;
 import ru.rsdev.gamecr.ui.adapters.RVAdapter;
 import ru.rsdev.gamecr.utils.ConstantManager;
 
-public class PreviewFragment extends Fragment {
+public class SingleGameFragment extends Fragment {
     private List<Person> persons;
     private RecyclerView rv;
     private RelativeLayout containerFragmetn;
@@ -192,28 +193,16 @@ public class PreviewFragment extends Fragment {
         ArrayList<String> answersVariant = mDBHelper.getAnswerPC(oldAnswer);
 
         //Проверка на повторы
-        for (int i=0;i<answersVariant.size();i++) {
-
-            for (int j = 0; j < persons.size(); j++) {
-                String str1 = answersVariant.get(i);
-                String str2 = persons.get(j).name;
-
-                if (str1.equals(str2)) {
-                    answersVariant.remove(i);
-                }
-            }
+        ArrayList<String> list = new ArrayList<>();
+        for (int i=0;i<persons.size();i++){
+            list.add(persons.get(i).name);
         }
+        answersVariant.removeAll(list);
 
-
-
-/*
         //Выбор случайного города из всех вариантов
         final Random random = new Random();
         int numberOfAnswer = random.nextInt(answersVariant.size());
         return answersVariant.get(numberOfAnswer);
-*/
-        return answersVariant.get(0);
-        //return mDBHelper.getAnswerPC(oldAnswer);
     }
 
     private void addAnswer(String answer){
@@ -221,13 +210,17 @@ public class PreviewFragment extends Fragment {
         String stateName = list.get(0);
         String population = list.get(2);
         String dateStart = list.get(3);
-
-        persons.add(0, new Person(answer, stateName, population, dateStart, String.valueOf(persons.size() + 1) ));
+        persons.add(0, new Person(
+                answer,
+                stateName,
+                population,
+                dateStart,
+                String.valueOf(persons.size() + 1)
+        ));
     }
 
 
     private void gameOver(String winnerName, int pointsCount){
-
         ResultFragment resultFragment = new ResultFragment();
         Bundle arguments = new Bundle();
 
