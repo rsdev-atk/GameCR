@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import ru.rsdev.gamecr.R;
-import ru.rsdev.gamecr.ui.fragments.SingleGameFragment;
+import ru.rsdev.gamecr.ui.fragments.PreviewSingleGameFragment;
 
 public class MainActivity extends SingleFragmentActivity {
 
@@ -25,11 +25,8 @@ public class MainActivity extends SingleFragmentActivity {
     private Toolbar mToolbar;
     private DrawerLayout mNavigationDrawer;
     private ImageView mImageView;
-
     private FragmentTransaction fTrans;
-    private SingleGameFragment singleGameFragment;
-
-
+    private PreviewSingleGameFragment previewSingleGameFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -46,9 +43,9 @@ public class MainActivity extends SingleFragmentActivity {
 
 
         //frag
-        singleGameFragment = new SingleGameFragment();
+        previewSingleGameFragment = new PreviewSingleGameFragment();
         fTrans = getSupportFragmentManager().beginTransaction();
-        fTrans.replace(R.id.fragment_container, singleGameFragment);
+        fTrans.replace(R.id.fragment_container, previewSingleGameFragment);
         fTrans.commit();
 
 

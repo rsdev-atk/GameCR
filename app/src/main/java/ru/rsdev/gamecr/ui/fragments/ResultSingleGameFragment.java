@@ -12,7 +12,7 @@ import android.widget.TextView;
 import ru.rsdev.gamecr.R;
 import ru.rsdev.gamecr.utils.ConstantManager;
 
-public class ResultFragment extends Fragment {
+public class ResultSingleGameFragment extends Fragment {
 
     private TextView winnerName, pointsGame;
     private Button newGameButton;
@@ -29,10 +29,8 @@ public class ResultFragment extends Fragment {
         if (bundle != null) {
             String winner = bundle.getString(ConstantManager.NAME_WINNER_RESULT);
             Integer progressGame = bundle.getInt(ConstantManager.POINT_COUNT_RESULT);
-
             winnerName.setText(winner);
             pointsGame.setText("Количество ходов: " + progressGame.toString());
-
         }
 
         newGameButton = (Button) v.findViewById(R.id.new_single_game_button);
@@ -45,17 +43,8 @@ public class ResultFragment extends Fragment {
                 fTrans = getActivity().getSupportFragmentManager().beginTransaction();
                 fTrans.replace(R.id.fragment_container, singleGameFragment);
                 fTrans.commit();
-
-
-
-
             }
         });
-
-
-
-
-
         return v;
     }
 

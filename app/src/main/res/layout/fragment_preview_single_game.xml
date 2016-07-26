@@ -67,25 +67,26 @@
         />
 
     <RadioGroup
+        android:id="@+id/rb_time_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/rb_time_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1 минута"
             android:checked="true"/>
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/rb_time_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3 минуты"
             />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/rb_time_high"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Без ограничения"
@@ -100,25 +101,26 @@
         />
 
     <RadioGroup
+        android:id="@+id/rb_type_game_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/rb_type_game_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Легко"
             android:checked="true"/>
 
         <RadioButton
-            android:id="@+id/radioButton5"
+            android:id="@+id/rb_type_game_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Средне"
             />
 
         <RadioButton
-            android:id="@+id/radioButton6"
+            android:id="@+id/rb_type_game_high"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Сложно"
@@ -126,6 +128,7 @@
     </RadioGroup>
 
     <Button
+        android:id="@+id/txt_start_new_single_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Начать"

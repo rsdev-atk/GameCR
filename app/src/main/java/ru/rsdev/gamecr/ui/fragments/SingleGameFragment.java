@@ -54,7 +54,7 @@ public class SingleGameFragment extends Fragment {
         cities = new ArrayList<>();
         String answer = dbHelper.getRandomCity();
         addAnswer(answer);
-        startTimer(ConstantManager.TIMER_SIMGLE_GAME_LOW);
+        startTimer(ConstantManager.TIMER_SINGLE_GAME_LOW);
     }
 
     private void initializationAdapter(){
@@ -112,7 +112,7 @@ public class SingleGameFragment extends Fragment {
                     //setEditText(true);
 
                     restartTimer();
-                    startTimer(ConstantManager.TIMER_SIMGLE_GAME_LOW);
+                    startTimer(ConstantManager.TIMER_SINGLE_GAME_LOW);
                 }
             }
         });
@@ -121,7 +121,7 @@ public class SingleGameFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 showSnackbar("Подсказка");
-                final int timeTimerMax = ConstantManager.TIMER_SIMGLE_GAME_LOW;
+                final int timeTimerMax = ConstantManager.TIMER_SINGLE_GAME_LOW;
                 new CountDownTimer(timeTimerMax, 1000) {
 
                     float timeKoef = (float)timeTimerMax/(100*1000);
@@ -222,17 +222,17 @@ public class SingleGameFragment extends Fragment {
 
     private void gameOver(String winnerName){
         Integer pointsCount = cities.size();
-        ResultFragment resultFragment = new ResultFragment();
+        ResultSingleGameFragment resultSingleGameFragment = new ResultSingleGameFragment();
         Bundle arguments = new Bundle();
 
         arguments.putString(ConstantManager.NAME_WINNER_RESULT, winnerName);
         arguments.putInt(ConstantManager.POINT_COUNT_RESULT, pointsCount);
 
-        resultFragment.setArguments(arguments);
+        resultSingleGameFragment.setArguments(arguments);
 
         FragmentTransaction fTrans;
         fTrans = getActivity().getSupportFragmentManager().beginTransaction();
-        fTrans.replace(R.id.fragment_container, resultFragment);
+        fTrans.replace(R.id.fragment_container, resultSingleGameFragment);
         fTrans.commit();
     }
 
