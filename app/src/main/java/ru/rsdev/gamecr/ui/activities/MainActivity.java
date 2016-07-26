@@ -27,7 +27,7 @@ public class MainActivity extends SingleFragmentActivity {
     private ImageView mImageView;
 
     private FragmentTransaction fTrans;
-    private SingleGameFragment previuFragment;
+    private SingleGameFragment singleGameFragment;
 
 
 
@@ -46,9 +46,9 @@ public class MainActivity extends SingleFragmentActivity {
 
 
         //frag
-        previuFragment = new SingleGameFragment();
+        singleGameFragment = new SingleGameFragment();
         fTrans = getSupportFragmentManager().beginTransaction();
-        fTrans.replace(R.id.fragment_container, previuFragment);
+        fTrans.replace(R.id.fragment_container, singleGameFragment);
         fTrans.commit();
 
 

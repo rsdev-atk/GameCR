@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/person_name"
+                android:id="@+id/txt_name_city"
                 android:textSize="24sp"
                 android:textColor="@color/black"
                 />
@@ -44,21 +44,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/person_age"
+                android:id="@+id/txt_region_city"
 
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txt_population"
+                android:id="@+id/txt_population_city"
                 android:text="Население"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txt_date_start"
+                android:id="@+id/txt_date_start_city"
                 android:text="Основан"
                 />
 

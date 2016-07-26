@@ -12,7 +12,7 @@
         android:id="@+id/top_panel_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/top_panel"
+        layout="@layout/status_panel"
         />
 
 

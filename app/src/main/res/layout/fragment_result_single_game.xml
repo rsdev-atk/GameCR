@@ -26,6 +26,12 @@
         android:layout_height="wrap_content"
         android:text="Получено 50 очков" />
 
+    <Button
+        android:id="@+id/new_single_game_button"
+        android:text="Новая игра"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>
 
 

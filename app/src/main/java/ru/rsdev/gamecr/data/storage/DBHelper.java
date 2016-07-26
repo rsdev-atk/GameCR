@@ -62,13 +62,7 @@ public class DBHelper {
             //result = "No";
         }
         cursor.close();
-
         return answersVariant;
-
-
-
-
-
     }
 
     //Поиск города в БД

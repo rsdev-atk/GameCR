@@ -2,7 +2,7 @@ package ru.rsdev.gamecr.data.managers;
 
 import java.util.List;
 
-import ru.rsdev.gamecr.data.model.Person;
+import ru.rsdev.gamecr.data.model.City;
 
 public class GameAlgorithm {
     //Список мусорных букв, на которые не нечинаются города (ё и й заменяются на соответствующие е и и)
@@ -56,7 +56,7 @@ public class GameAlgorithm {
         return lastCharOldAnswer==firstCharUserAnswer;
     }
 
-    public boolean getDoublingAnswer(List<Person> list, String answer){
+    public boolean getDoublingAnswer(List<City> list, String answer){
 
         boolean result = true;
         for(int i=0;i<list.size();i++){

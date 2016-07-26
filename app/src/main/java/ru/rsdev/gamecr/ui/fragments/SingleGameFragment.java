@@ -23,44 +23,43 @@ import java.util.List;
 import java.util.Random;
 
 import ru.rsdev.gamecr.R;
-import ru.rsdev.gamecr.data.model.Person;
+import ru.rsdev.gamecr.data.model.City;
 import ru.rsdev.gamecr.data.storage.DBHelper;
 import ru.rsdev.gamecr.ui.adapters.RVAdapter;
 import ru.rsdev.gamecr.utils.ConstantManager;
 
 public class SingleGameFragment extends Fragment {
-    private List<Person> persons;
-    private RecyclerView rv;
-    private RelativeLayout containerFragmetn;
-    DBHelper mDBHelper;
-    EditText answerEditText;
-    com.github.clans.fab.FloatingActionButton fabAnswer, fabSurrender, fabHelp;
-    ProgressPieView mProgressPieView;
+    private List<City> cities;
+    private RecyclerView recyclerView;
+    private RelativeLayout containerFragment;
+    private DBHelper dbHelper;
+    private EditText answerEditText;
+    private com.github.clans.fab.FloatingActionButton answerFAB, surrenderFAB, helpFAB;
+    private ProgressPieView progressPieView;
+    private CountDownTimer countDownTimer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         View v = inflater.inflate(R.layout.recyclerview_activity, null);
-        mDBHelper = new DBHelper(getActivity());
-        initializeView(v);
-
+        dbHelper = new DBHelper(getActivity());
+        initializationView(v);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        rv.setLayoutManager(llm);
-
-        initializeData();
-        initializeAdapter();
-
+        recyclerView.setLayoutManager(llm);
+        initializationData();
+        initializationAdapter();
         return v;
     }
 
-    private void initializeData(){
-        persons = new ArrayList<>();
-        String answer = mDBHelper.getRandomCity();
+    private void initializationData(){
+        cities = new ArrayList<>();
+        String answer = dbHelper.getRandomCity();
         addAnswer(answer);
-        }
+        startTimer(ConstantManager.TIMER_SIMGLE_GAME_LOW);
+    }
 
-    private void initializeAdapter(){
-        RVAdapter adapter = new RVAdapter(persons);
-        rv.setAdapter(adapter);
+    private void initializationAdapter(){
+        RVAdapter adapter = new RVAdapter(cities);
+        recyclerView.setAdapter(adapter);
     }
 
     private void setEditText(boolean enable){
@@ -69,15 +68,15 @@ public class SingleGameFragment extends Fragment {
         answerEditText.setFocusableInTouchMode(enable);
     }
 
-    private void initializeView(View v){
-        rv=(RecyclerView)v.findViewById(R.id.rv);
-        fabAnswer = (com.github.clans.fab.FloatingActionButton)v.findViewById(R.id.fab_answer);
-        fabSurrender = (com.github.clans.fab.FloatingActionButton)v.findViewById(R.id.fab_surrender);
-        fabHelp = (com.github.clans.fab.FloatingActionButton)v.findViewById(R.id.fab_help);
-        mProgressPieView = (ProgressPieView)v.findViewById(R.id.progressPieView);
-
-
+    private void initializationView(View v){
+        recyclerView =(RecyclerView)v.findViewById(R.id.rv);
+        answerFAB = (com.github.clans.fab.FloatingActionButton)v.findViewById(R.id.fab_answer);
+        surrenderFAB = (com.github.clans.fab.FloatingActionButton)v.findViewById(R.id.fab_surrender);
+        helpFAB = (com.github.clans.fab.FloatingActionButton)v.findViewById(R.id.fab_help);
+        progressPieView = (ProgressPieView)v.findViewById(R.id.progressPieView);
+        containerFragment = (RelativeLayout)v.findViewById(R.id.container_fragmetn);
         answerEditText = (EditText)v.findViewById(R.id.answer_edit_text);
+
         answerEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -85,7 +84,7 @@ public class SingleGameFragment extends Fragment {
                 if(KeyEvent.ACTION_DOWN == keyEvent.getAction()){
                     switch (i){
                         case KeyEvent.KEYCODE_ENTER:
-                            fabAnswer.callOnClick();
+                            answerFAB.callOnClick();
                             break;
                         default:
                     }
@@ -95,13 +94,13 @@ public class SingleGameFragment extends Fragment {
             }
         });
 
-        fabAnswer.setOnClickListener(new View.OnClickListener() {
+        answerFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Ответ пользователя
-                String oldAnswer = persons.get(0).name;
+                String oldAnswer = cities.get(0).name;
                 if(chekUserAnswer(oldAnswer)) {
-                    initializeAdapter();
+                    initializationAdapter();
                     //Скрываем клавиатуру
                     InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -109,31 +108,33 @@ public class SingleGameFragment extends Fragment {
                     //Оnвет ПК
                     String pcAnswer = getPCAnswer();
                     addAnswer(pcAnswer);
-                    initializeAdapter();
+                    initializationAdapter();
                     //setEditText(true);
+
+                    restartTimer();
+                    startTimer(ConstantManager.TIMER_SIMGLE_GAME_LOW);
                 }
             }
         });
 
-        fabHelp.setOnClickListener(new View.OnClickListener() {
+        helpFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showSnackbar("Подсказка");
-
                 final int timeTimerMax = ConstantManager.TIMER_SIMGLE_GAME_LOW;
                 new CountDownTimer(timeTimerMax, 1000) {
 
                     float timeKoef = (float)timeTimerMax/(100*1000);
 
                     public void onTick(long millisUntilFinished) {
-                        mProgressPieView.setText(String.valueOf((millisUntilFinished-1) / 1000));
-                        mProgressPieView.setProgress((int) (millisUntilFinished / (1000*timeKoef)));
+                        progressPieView.setText(String.valueOf((millisUntilFinished-1) / 1000));
+                        progressPieView.setProgress((int) (millisUntilFinished / (1000*timeKoef)));
                     }
 
                     public void onFinish() {
-                        mProgressPieView.setText("0");
-                        mProgressPieView.setProgress(0);
-
+                        progressPieView.setText("0");
+                        progressPieView.setProgress(0);
+                        gameOver("Соперник выиграл");
                         //showSnackbar("GameOver");
                     }
                 }.start();
@@ -142,16 +143,15 @@ public class SingleGameFragment extends Fragment {
             }
         });
 
-        fabSurrender.setOnClickListener(new View.OnClickListener() {
+        surrenderFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showSnackbar("Сдаться");
-                int pointGame = persons.size();
-                gameOver("Победил соперник", pointGame);
+                int pointGame = cities.size();
+                gameOver("Победил соперник");
             }
         });
 
-        containerFragmetn = (RelativeLayout)v.findViewById(R.id.container_fragmetn);
 
     }
 
@@ -161,23 +161,23 @@ public class SingleGameFragment extends Fragment {
         if (answerEditText.getText().length() > 0) {
             answer = answerEditText.getText().toString();
             //Нормализация ответа
-            answer = mDBHelper.gameAlgorithm.getCorrectCityName(answer);
+            answer = dbHelper.gameAlgorithm.getCorrectCityName(answer);
         }else {
             showSnackbar("Введите ответ");
             return false;
         }
-        boolean correctFirstLetter = mDBHelper.gameAlgorithm.checkFirstLatter(answer,oldAnswer);
+        boolean correctFirstLetter = dbHelper.gameAlgorithm.checkFirstLatter(answer,oldAnswer);
         //Проверка на первую букву
         if (!correctFirstLetter){
             showSnackbar("Не верна первая буква");
             return false;
             //Проверка на существование города
-        }else if(!mDBHelper.findCityByUserAnswer(answer)){
+        }else if(!dbHelper.findCityByUserAnswer(answer)){
             showSnackbar("Города не существует");
             return false;
         }
         //Проверка на повтор
-        else if(!mDBHelper.gameAlgorithm.getDoublingAnswer(persons, answer)){
+        else if(!dbHelper.gameAlgorithm.getDoublingAnswer(cities, answer)){
             showSnackbar("Повтор города");
             return false;
         }
@@ -189,13 +189,13 @@ public class SingleGameFragment extends Fragment {
     }
 
     private String getPCAnswer(){
-        String oldAnswer = persons.get(0).name;
-        ArrayList<String> answersVariant = mDBHelper.getAnswerPC(oldAnswer);
+        String oldAnswer = cities.get(0).name;
+        ArrayList<String> answersVariant = dbHelper.getAnswerPC(oldAnswer);
 
         //Проверка на повторы
         ArrayList<String> list = new ArrayList<>();
-        for (int i=0;i<persons.size();i++){
-            list.add(persons.get(i).name);
+        for (int i = 0; i< cities.size(); i++){
+            list.add(cities.get(i).name);
         }
         answersVariant.removeAll(list);
 
@@ -206,21 +206,22 @@ public class SingleGameFragment extends Fragment {
     }
 
     private void addAnswer(String answer){
-        List<String> list = mDBHelper.getAllDataAboutCity(answer);
+        List<String> list = dbHelper.getAllDataAboutCity(answer);
         String stateName = list.get(0);
         String population = list.get(2);
         String dateStart = list.get(3);
-        persons.add(0, new Person(
+        cities.add(0, new City(
                 answer,
                 stateName,
                 population,
                 dateStart,
-                String.valueOf(persons.size() + 1)
+                String.valueOf(cities.size() + 1)
         ));
     }
 
 
-    private void gameOver(String winnerName, int pointsCount){
+    private void gameOver(String winnerName){
+        Integer pointsCount = cities.size();
         ResultFragment resultFragment = new ResultFragment();
         Bundle arguments = new Bundle();
 
@@ -236,9 +237,31 @@ public class SingleGameFragment extends Fragment {
     }
 
     private void showSnackbar(String message){
-        Snackbar.make(containerFragmetn, message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(containerFragment, message, Snackbar.LENGTH_SHORT).show();
     }
 
+    private void startTimer(final int timeTimerMax){
+
+        countDownTimer = new CountDownTimer(timeTimerMax, 1000) {
+
+            float timeKoef = (float)timeTimerMax/(100*1000);
+
+            public void onTick(long millisUntilFinished) {
+                progressPieView.setText(String.valueOf((millisUntilFinished-1) / 1000));
+                progressPieView.setProgress((int) (millisUntilFinished / (1000*timeKoef)));
+            }
+
+            public void onFinish() {
+                progressPieView.setText("0");
+                progressPieView.setProgress(0);
+                gameOver("Соперник выиграл");
+            }
+        }.start();
+    }
+
+    private void restartTimer(){
+        countDownTimer.cancel();
+    }
 
 
 }
