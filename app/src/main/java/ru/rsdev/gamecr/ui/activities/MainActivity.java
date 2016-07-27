@@ -37,23 +37,16 @@ public class MainActivity extends SingleFragmentActivity {
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mNavigationDrawer = (DrawerLayout)findViewById(R.id.navigation_drawer);
 
-
         setupToolbar();
         setupDrawer();
 
-
-        //frag
         previewSingleGameFragment = new PreviewSingleGameFragment();
         fTrans = getSupportFragmentManager().beginTransaction();
         fTrans.replace(R.id.fragment_container, previewSingleGameFragment);
         fTrans.commit();
-
-
     }
 
-
     private void setupToolbar(){
-
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -75,17 +68,11 @@ public class MainActivity extends SingleFragmentActivity {
             }
         });
 
-        //Avatar
-        //mImageView = (ImageView)findViewById(R.id.drawer_avatar);
         mImageView = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.drawer_avatar);
-
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_0);
         RoundedBitmapDrawable rBD = RoundedBitmapDrawableFactory.create(getResources(),bitmap);
         rBD.setCornerRadius(Math.max(bitmap.getHeight(),bitmap.getWidth())/2.0f);
         mImageView.setImageDrawable(rBD);
-
-
-
     }
 
     @Override
@@ -96,25 +83,17 @@ public class MainActivity extends SingleFragmentActivity {
         else {
             super.onBackPressed();
         }
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
             mNavigationDrawer.openDrawer(GravityCompat.START);
-
-
-
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
     private void showSnackbar(String message){
         Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
     }
-
 }

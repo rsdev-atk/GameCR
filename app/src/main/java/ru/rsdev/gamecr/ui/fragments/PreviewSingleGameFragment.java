@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import ru.rsdev.gamecr.R;
@@ -61,6 +60,7 @@ public class PreviewSingleGameFragment extends Fragment{
                         break;
                 }
 
+                //Сохранение настроек одиночной игры
                 SingleGameSetting.getInstance().setTypeSingleGame(typeSetting);
                 SingleGameSetting.getInstance().setTimeSingleGame(timeSetting);
 
@@ -68,7 +68,7 @@ public class PreviewSingleGameFragment extends Fragment{
                 FragmentTransaction fTrans;
                 fTrans = getActivity().getSupportFragmentManager().beginTransaction();
                 fTrans.replace(R.id.fragment_container, singleGameFragment);
- //               fTrans.commit();
+                fTrans.commit();
 
 
 

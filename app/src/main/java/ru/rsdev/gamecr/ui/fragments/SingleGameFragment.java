@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 import ru.rsdev.gamecr.R;
+import ru.rsdev.gamecr.data.managers.SingleGameSetting;
 import ru.rsdev.gamecr.data.model.City;
 import ru.rsdev.gamecr.data.storage.DBHelper;
 import ru.rsdev.gamecr.ui.adapters.RVAdapter;
@@ -37,6 +38,7 @@ public class SingleGameFragment extends Fragment {
     private com.github.clans.fab.FloatingActionButton answerFAB, surrenderFAB, helpFAB;
     private ProgressPieView progressPieView;
     private CountDownTimer countDownTimer;
+    private int maxCountAnswerPC;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
@@ -47,6 +49,23 @@ public class SingleGameFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
         initializationData();
         initializationAdapter();
+
+        //Настройка максимального количества ответов ПК
+        Random random = new Random();
+        switch (SingleGameSetting.getInstance().getTypeSingleGame()){
+            case ConstantManager.TYPE_SINGLE_GAME_LOW:
+                maxCountAnswerPC = ConstantManager.MAX_COUNT_SINGLE_GAME_LOW +
+                        random.nextInt(ConstantManager.MAX_COUNT_SINGLE_GAME_LOW);
+                break;
+            case ConstantManager.TYPE_SINGLE_GAME_MEDIUM:
+                maxCountAnswerPC = ConstantManager.MAX_COUNT_SINGLE_GAME_MEDIUM +
+                        random.nextInt(ConstantManager.MAX_COUNT_SINGLE_GAME_MEDIUM);
+                break;
+            case ConstantManager.TYPE_SINGLE_GAME_HIGH:
+                maxCountAnswerPC = ConstantManager.MAX_COUNT_SINGLE_GAME_HIGH +
+                        random.nextInt(ConstantManager.MAX_COUNT_SINGLE_GAME_HIGH);
+                break;
+        }
         return v;
     }
 
@@ -54,7 +73,12 @@ public class SingleGameFragment extends Fragment {
         cities = new ArrayList<>();
         String answer = dbHelper.getRandomCity();
         addAnswer(answer);
-        startTimer(ConstantManager.TIMER_SINGLE_GAME_LOW);
+        if(SingleGameSetting.getInstance().getTimeSingleGame() != ConstantManager.TIMER_SINGLE_GAME_HIGH){
+            startTimer(SingleGameSetting.getInstance().getTimeSingleGame());
+        }else {
+            progressPieView.setText("∞");
+            progressPieView.setProgress(100);
+        }
     }
 
     private void initializationAdapter(){
@@ -106,13 +130,26 @@ public class SingleGameFragment extends Fragment {
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
                     //Оnвет ПК
-                    String pcAnswer = getPCAnswer();
-                    addAnswer(pcAnswer);
-                    initializationAdapter();
-                    //setEditText(true);
+                    if(cities.size() < maxCountAnswerPC) {
+                        ArrayList pcAnswerList = getPCAnswer();
 
-                    restartTimer();
-                    startTimer(ConstantManager.TIMER_SINGLE_GAME_LOW);
+                        if(pcAnswerList.size() == 0){
+                            gameOver("Игрок выиграл. На данную букву больше нет городов");
+                        }
+
+                        //Выбор случайного города из всех вариантов
+                        Random random = new Random();
+                        int numberOfAnswer = random.nextInt(pcAnswerList.size());
+                        String pcAnswer = pcAnswerList.get(numberOfAnswer).toString();
+
+                        addAnswer(pcAnswer);
+                        initializationAdapter();
+                        if (SingleGameSetting.getInstance().getTimeSingleGame() != ConstantManager.TIMER_SINGLE_GAME_HIGH) {
+                            restartTimer();
+                        }
+                    }else {
+                        gameOver("ПК проиграл");
+                    }
                 }
             }
         });
@@ -123,23 +160,17 @@ public class SingleGameFragment extends Fragment {
                 showSnackbar("Подсказка");
                 final int timeTimerMax = ConstantManager.TIMER_SINGLE_GAME_LOW;
                 new CountDownTimer(timeTimerMax, 1000) {
-
                     float timeKoef = (float)timeTimerMax/(100*1000);
-
                     public void onTick(long millisUntilFinished) {
                         progressPieView.setText(String.valueOf((millisUntilFinished-1) / 1000));
                         progressPieView.setProgress((int) (millisUntilFinished / (1000*timeKoef)));
                     }
-
                     public void onFinish() {
                         progressPieView.setText("0");
                         progressPieView.setProgress(0);
                         gameOver("Соперник выиграл");
-                        //showSnackbar("GameOver");
                     }
                 }.start();
-
-
             }
         });
 
@@ -188,7 +219,7 @@ public class SingleGameFragment extends Fragment {
         }
     }
 
-    private String getPCAnswer(){
+    private ArrayList getPCAnswer(){
         String oldAnswer = cities.get(0).name;
         ArrayList<String> answersVariant = dbHelper.getAnswerPC(oldAnswer);
 
@@ -198,11 +229,9 @@ public class SingleGameFragment extends Fragment {
             list.add(cities.get(i).name);
         }
         answersVariant.removeAll(list);
+        return answersVariant;
 
-        //Выбор случайного города из всех вариантов
-        final Random random = new Random();
-        int numberOfAnswer = random.nextInt(answersVariant.size());
-        return answersVariant.get(numberOfAnswer);
+
     }
 
     private void addAnswer(String answer){
@@ -261,6 +290,7 @@ public class SingleGameFragment extends Fragment {
 
     private void restartTimer(){
         countDownTimer.cancel();
+        startTimer(SingleGameSetting.getInstance().getTimeSingleGame());
     }
 
 

@@ -47,6 +47,4 @@ public class ResultSingleGameFragment extends Fragment {
         });
         return v;
     }
-
-
 }
