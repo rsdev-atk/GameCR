@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Игра в города России</string>
+
+    <!-- Ошибки в ответе пользователя -->
+    <string name="user_answer_error_input_answer">Введите ответ</string>
+    <string name="user_answer_error_first_letter">Не верна первая буква</string>
+    <string name="user_answer_error_city_not_exist">Города не существует</string>
+    <string name="user_answer_error_repeated_answer">Повтор города</string>
+
+
+
+
+    <!-- Варианты окончания игры -->
+    <string name="single_game_over_time_out">Время закончилось</string>
+    <string name="single_game_over_surrender">Вы сдались</string>
+    <string name="single_game_over_opponent_not_answer">Соперник не смог ответить</string>
+
+
+
+    <!-- Другие строковые ресурсы -->
+    <string name="infinity_value">∞</string>
+
 </resources>
+

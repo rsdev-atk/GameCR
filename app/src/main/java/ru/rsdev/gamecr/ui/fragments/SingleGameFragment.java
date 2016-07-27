@@ -76,7 +76,7 @@ public class SingleGameFragment extends Fragment {
         if(SingleGameSetting.getInstance().getTimeSingleGame() != ConstantManager.TIMER_SINGLE_GAME_HIGH){
             startTimer(SingleGameSetting.getInstance().getTimeSingleGame());
         }else {
-            progressPieView.setText("∞");
+            progressPieView.setText(getString(R.string.infinity_value));
             progressPieView.setProgress(100);
         }
     }
@@ -134,7 +134,7 @@ public class SingleGameFragment extends Fragment {
                         ArrayList pcAnswerList = getPCAnswer();
 
                         if(pcAnswerList.size() == 0){
-                            gameOver("Игрок выиграл. На данную букву больше нет городов");
+                            gameOver(getString(R.string.single_game_over_opponent_not_answer));
                         }
 
                         //Выбор случайного города из всех вариантов
@@ -148,7 +148,7 @@ public class SingleGameFragment extends Fragment {
                             restartTimer();
                         }
                     }else {
-                        gameOver("ПК проиграл");
+                        gameOver(getString(R.string.single_game_over_opponent_not_answer));
                     }
                 }
             }
@@ -158,19 +158,6 @@ public class SingleGameFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 showSnackbar("Подсказка");
-                final int timeTimerMax = ConstantManager.TIMER_SINGLE_GAME_LOW;
-                new CountDownTimer(timeTimerMax, 1000) {
-                    float timeKoef = (float)timeTimerMax/(100*1000);
-                    public void onTick(long millisUntilFinished) {
-                        progressPieView.setText(String.valueOf((millisUntilFinished-1) / 1000));
-                        progressPieView.setProgress((int) (millisUntilFinished / (1000*timeKoef)));
-                    }
-                    public void onFinish() {
-                        progressPieView.setText("0");
-                        progressPieView.setProgress(0);
-                        gameOver("Соперник выиграл");
-                    }
-                }.start();
             }
         });
 
@@ -179,10 +166,9 @@ public class SingleGameFragment extends Fragment {
             public void onClick(View view) {
                 showSnackbar("Сдаться");
                 int pointGame = cities.size();
-                gameOver("Победил соперник");
+                gameOver(getString(R.string.single_game_over_surrender));
             }
         });
-
 
     }
 
@@ -194,22 +180,22 @@ public class SingleGameFragment extends Fragment {
             //Нормализация ответа
             answer = dbHelper.gameAlgorithm.getCorrectCityName(answer);
         }else {
-            showSnackbar("Введите ответ");
+            showSnackbar(getString(R.string.user_answer_error_input_answer));
             return false;
         }
         boolean correctFirstLetter = dbHelper.gameAlgorithm.checkFirstLatter(answer,oldAnswer);
         //Проверка на первую букву
         if (!correctFirstLetter){
-            showSnackbar("Не верна первая буква");
+            showSnackbar(getString(R.string.user_answer_error_first_letter));
             return false;
             //Проверка на существование города
         }else if(!dbHelper.findCityByUserAnswer(answer)){
-            showSnackbar("Города не существует");
+            showSnackbar(getString(R.string.user_answer_error_city_not_exist));
             return false;
         }
         //Проверка на повтор
         else if(!dbHelper.gameAlgorithm.getDoublingAnswer(cities, answer)){
-            showSnackbar("Повтор города");
+            showSnackbar(getString(R.string.user_answer_error_repeated_answer));
             return false;
         }
         else {
@@ -283,7 +269,7 @@ public class SingleGameFragment extends Fragment {
             public void onFinish() {
                 progressPieView.setText("0");
                 progressPieView.setProgress(0);
-                gameOver("Соперник выиграл");
+                gameOver(getString(R.string.single_game_over_time_out));
             }
         }.start();
     }
