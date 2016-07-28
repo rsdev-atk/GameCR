@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "686201450105",
+    "firebase_url": "https://gamecr-e153f.firebaseio.com",
+    "project_id": "gamecr-e153f",
+    "storage_bucket": "gamecr-e153f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686201450105:android:9113f95893879781",
+        "android_client_info": {
+          "package_name": "ru.rsdev.gamecr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "686201450105-3lmatgep6h29p47ailqi7iojou4qua4d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9MWQ7YRaklINxh3vAB-1V_GCTvOf0j5s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
