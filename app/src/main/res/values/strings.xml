@@ -8,17 +8,16 @@
     <string name="user_answer_error_repeated_answer">Повтор города</string>
 
 
-
-
     <!-- Варианты окончания игры -->
     <string name="single_game_over_time_out">Время закончилось</string>
     <string name="single_game_over_surrender">Вы сдались</string>
     <string name="single_game_over_opponent_not_answer">Соперник не смог ответить</string>
-
+    <string name="single_game_over_not_answer">Закончились города на данную букву</string>
 
 
     <!-- Другие строковые ресурсы -->
     <string name="infinity_value">∞</string>
+
 
 </resources>
 

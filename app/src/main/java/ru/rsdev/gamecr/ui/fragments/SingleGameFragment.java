@@ -129,35 +129,35 @@ public class SingleGameFragment extends Fragment {
                     InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-                    //Оnвет ПК
-                    if(cities.size() < maxCountAnswerPC) {
-                        ArrayList pcAnswerList = getPCAnswer();
-
-                        if(pcAnswerList.size() == 0){
-                            gameOver(getString(R.string.single_game_over_opponent_not_answer));
-                        }
-
-                        //Выбор случайного города из всех вариантов
-                        Random random = new Random();
-                        int numberOfAnswer = random.nextInt(pcAnswerList.size());
-                        String pcAnswer = pcAnswerList.get(numberOfAnswer).toString();
-
-                        addAnswer(pcAnswer);
-                        initializationAdapter();
-                        if (SingleGameSetting.getInstance().getTimeSingleGame() != ConstantManager.TIMER_SINGLE_GAME_HIGH) {
-                            restartTimer();
-                        }
-                    }else {
-                        gameOver(getString(R.string.single_game_over_opponent_not_answer));
-                    }
+                    //Ответ ПК
+                    getCorrectAnswerPS();
                 }
             }
         });
 
+        //Подсказка
         helpFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSnackbar("Подсказка");
+                ArrayList pcAnswerList = getAnswerList();
+                if(pcAnswerList.size() == 0){
+                    gameOver(getString(R.string.single_game_over_not_answer));
+                }
+                //Выбор случайного города из всех вариантов
+                Random random = new Random();
+                int numberOfAnswer = random.nextInt(pcAnswerList.size());
+                String pcAnswer = pcAnswerList.get(numberOfAnswer).toString();
+                addAnswer(pcAnswer);
+                initializationAdapter();
+                if (SingleGameSetting.getInstance().getTimeSingleGame() != ConstantManager.TIMER_SINGLE_GAME_HIGH) {
+                    restartTimer();
+                }
+                showSnackbar("Вы воспользовались подсказкой");
+                //Ответ ПК
+                getCorrectAnswerPS();
+
+
+
             }
         });
 
@@ -205,7 +205,7 @@ public class SingleGameFragment extends Fragment {
         }
     }
 
-    private ArrayList getPCAnswer(){
+    private ArrayList getAnswerList(){
         String oldAnswer = cities.get(0).name;
         ArrayList<String> answersVariant = dbHelper.getAnswerPC(oldAnswer);
 
@@ -277,6 +277,26 @@ public class SingleGameFragment extends Fragment {
     private void restartTimer(){
         countDownTimer.cancel();
         startTimer(SingleGameSetting.getInstance().getTimeSingleGame());
+    }
+
+    private void getCorrectAnswerPS(){
+        if(cities.size() < maxCountAnswerPC) {
+            ArrayList pcAnswerList = getAnswerList();
+            if(pcAnswerList.size() == 0){
+                gameOver(getString(R.string.single_game_over_opponent_not_answer));
+            }
+            //Выбор случайного города из всех вариантов
+            Random random = new Random();
+            int numberOfAnswer = random.nextInt(pcAnswerList.size());
+            String pcAnswer = pcAnswerList.get(numberOfAnswer).toString();
+            addAnswer(pcAnswer);
+            initializationAdapter();
+            if (SingleGameSetting.getInstance().getTimeSingleGame() != ConstantManager.TIMER_SINGLE_GAME_HIGH) {
+                restartTimer();
+            }
+        }else {
+            gameOver(getString(R.string.single_game_over_opponent_not_answer));
+        }
     }
 
 

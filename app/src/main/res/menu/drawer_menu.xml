@@ -2,23 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/single_game_menu"
+        <item android:id="@+id/single_game_menu_item"
               android:checkable="true"
               android:icon="@android:drawable/ic_menu_camera"
               android:title="Одиночная игра">
         </item>
 
-        <item android:id="@+id/online_game__menu"
+        <item android:id="@+id/online_game__menu_item"
               android:icon="@android:drawable/ic_menu_camera"
               android:title="Сетевая игра">
         </item>
 
-        <item android:id="@+id/rating_menu"
+        <item android:id="@+id/rating_menu_item"
               android:icon="@android:drawable/ic_menu_camera"
               android:title="Рейтинг">
         </item>
 
-        <item android:id="@+id/rules_menu"
+        <item android:id="@+id/rules_menu_item"
               android:icon="@android:drawable/ic_menu_camera"
               android:title="Правила">
         </item>

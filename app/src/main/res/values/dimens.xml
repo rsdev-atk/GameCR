@@ -21,7 +21,6 @@
     <dimen name="size_extra_96">72dp</dimen>
 
 
-
     <dimen name="spacing_larger_72">72dp</dimen>
     <dimen name="spacing_navbar_172">172dp</dimen>
     <dimen name="line_height">1dp</dimen>
@@ -31,11 +30,6 @@
     <dimen name="size_text_navbar">14sp</dimen>
 
 
-
-
-
-
-
     <dimen name="line_size">1dp</dimen>
 
     <dimen name="spacing_0dp">0dp</dimen>
@@ -43,17 +37,6 @@
     <dimen name="small_text_12">12sp</dimen>
     <dimen name="profile_image_size">256dp</dimen>
     <dimen name="fab_right_space">8dp</dimen>
-
-
-
-
-
-
-
-
-
-
-
 
 
 </resources>
